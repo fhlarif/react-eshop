@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Contact from "./pages/contact/Contact";
-import Home from "./pages/home/Home";
+/* Components */
+import { Footer, Header } from "./components/index";
+/* Pages */
+import { Home, Contact } from "./pages/index";
 
 function App() {
   return (
