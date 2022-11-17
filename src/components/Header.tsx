@@ -1,7 +1,8 @@
 import { ReactNode, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
-import { AiOutlineAlignRight } from "react-icons/ai";
+import { AiOutlineAlignRight, AiOutlineClose } from "react-icons/ai";
+import { motion } from "framer-motion";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -17,14 +18,10 @@ const Header = () => {
 
   return (
     <header className="w-full bg-black p-4 lg:text-lg leading-loose tracking-wide md:text-md text-sm">
-      <div
-        className={`w-full ${
-          showMenu ? "flex" : "hidden"
-        } justify-between h-full bg-gray-900 bg-opacity-70 absolute inset-0`}
-        onClick={() => hideMenu()}></div>
+      <Mobile hideMenu={hideMenu} showMenu={showMenu} />
       <nav className="flex justify-between">
-        {Logo}
-        {NavLeft}
+        <span className="">{Logo}</span>
+        <NavLeft />
         <NavRight toggleMenu={toggleMenu} />
       </nav>
     </header>
@@ -40,29 +37,42 @@ const Li = ({ children }: Props) => {
   );
 };
 
+type TActive = {
+  isActive: boolean;
+};
+
+const ActiveLink = ({ isActive }: TActive) =>
+  isActive ? "underline hover:decoration-amber-500 underline-offset-8 text-amber-500" : "";
+
 const Logo = (
-  <Link to="/">
+  <NavLink className={ActiveLink} to="/">
     <h1 className="uppercase text-lg md:text-xl flex">
       <span className="text-amber-500 capitalize">win</span>
       <span className="text-gray-100">Tyre</span>
     </h1>
-  </Link>
+  </NavLink>
 );
 
-const NavLeft = (
-  <ul className="hidden md:flex space-x-8">
-    <Li>
-      <Link to="/">Home</Link>
-    </Li>
-    <Li>
-      <Link to="/contact">Contact</Link>
-    </Li>
-  </ul>
-);
+const NavLeft = () => {
+  return (
+    <ul className="hidden md:flex space-x-8">
+      <Li>
+        <NavLink className={ActiveLink} to="/">
+          Home
+        </NavLink>
+      </Li>
+      <Li>
+        <NavLink className={ActiveLink} to="/contact">
+          Contact
+        </NavLink>
+      </Li>
+    </ul>
+  );
+};
 
 const Cart = () => {
   return (
-    <Link to="/cart">
+    <NavLink className={ActiveLink} to="/cart">
       <span className="flex gap-1">
         <span className="pt-1 flex">
           Cart <FaShoppingCart size={25} className="pt-1" />
@@ -71,7 +81,7 @@ const Cart = () => {
           45
         </span>
       </span>
-    </Link>
+    </NavLink>
   );
 };
 
@@ -80,25 +90,105 @@ const NavRight = ({ toggleMenu }: any) => {
     <ul className="flex space-x-8 items-center">
       <div className="hidden md:flex justify between gap-4 ">
         <Li>
-          <Link to="/login">Login</Link>
+          <NavLink className={ActiveLink} to="/login">
+            Login
+          </NavLink>
         </Li>
         <Li>
-          <Link to="/register">Register</Link>
+          <NavLink className={ActiveLink} to="/register">
+            Register
+          </NavLink>
         </Li>
         <Li>
-          <Link to="/order-history">My Orders</Link>
+          <NavLink className={ActiveLink} to="/order-history">
+            My Orders
+          </NavLink>
         </Li>
       </div>
       <div className="flex">
         <Li>
           <Cart />
         </Li>
-        <div onClick={() => toggleMenu()} className="cursor-pointer">
+        <div onClick={() => toggleMenu()} className="cursor-pointer md:hidden flex">
           <AiOutlineAlignRight size={35} className="pt-1" />
         </div>
       </div>
     </ul>
   );
 };
+
+type TMobile = {
+  hideMenu: () => void;
+  showMenu: boolean;
+};
+
+function Mobile({ hideMenu, showMenu }: TMobile): JSX.Element {
+  return (
+    <>
+      {showMenu ? (
+        <>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+            className={` flex justify-between h-full w-full bg-gray-900 bg-opacity-70 absolute inset-0`}
+            onClick={() => hideMenu()}></motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+            className={`w-1/2 h-full z-50 bg-black absolute inset-0`}>
+            <div>
+              <div className="flex justify-between w-full p-4">
+                {Logo}
+                <span onClick={() => hideMenu()}>
+                  <AiOutlineClose size={25}></AiOutlineClose>
+                </span>
+              </div>
+              <ul className="p-4 text-md flex flex-col gap-2">
+                <Li>
+                  <NavLink className={ActiveLink} to="/">
+                    Home
+                  </NavLink>
+                </Li>
+                <Li>
+                  <NavLink className={ActiveLink} to="/contact">
+                    Contact Us
+                  </NavLink>
+                </Li>
+                <Li>
+                  <NavLink className={ActiveLink} to="/login">
+                    Login
+                  </NavLink>
+                </Li>
+                <Li>
+                  <NavLink className={ActiveLink} to="/register">
+                    Register
+                  </NavLink>
+                </Li>
+                <Li>
+                  <NavLink className={ActiveLink} to="/orders">
+                    My Orders
+                  </NavLink>
+                </Li>
+                <Li>
+                  <NavLink className={ActiveLink} to="/cart">
+                    Cart
+                  </NavLink>
+                </Li>
+              </ul>
+            </div>
+          </motion.div>
+        </>
+      ) : (
+        <motion.div
+          initial={{ opacity: 1, scale: 1 }}
+          animate={{ opacity: 0, scale: 0.5 }}
+          transition={{ duration: 0.4 }}
+          className={` flex justify-between h-full w-full rounded-lg bg-gray-900 bg-opacity-70 absolute inset-0`}></motion.div>
+      )}
+    </>
+  );
+}
 
 export default Header;
