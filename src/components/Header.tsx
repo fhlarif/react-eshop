@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 import { AiOutlineAlignRight, AiOutlineClose } from "react-icons/ai";
@@ -6,19 +6,21 @@ import { motion } from "framer-motion";
 
 const Header = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showTransition, setShowTransition] = useState(false);
 
   const toggleMenu = () => {
-    console.log("click");
     setShowMenu(!showMenu);
+    showMenu === true ? setShowTransition(false) : setShowTransition(true);
   };
 
   const hideMenu = () => {
     setShowMenu(false);
+    // setShowMenu(true);
   };
 
   return (
     <header className="w-full bg-black p-4 lg:text-lg leading-loose tracking-wide md:text-md text-sm">
-      <Mobile hideMenu={hideMenu} showMenu={showMenu} />
+      <Mobile hideMenu={hideMenu} showMenu={showMenu} showTransition={showTransition} />
       <nav className="flex justify-between">
         <span className="">{Logo}</span>
         <NavLeft />
@@ -120,12 +122,13 @@ const NavRight = ({ toggleMenu }: any) => {
 type TMobile = {
   hideMenu: () => void;
   showMenu: boolean;
+  showTransition: boolean;
 };
 
-function Mobile({ hideMenu, showMenu }: TMobile): JSX.Element {
+function Mobile({ hideMenu, showMenu, showTransition }: TMobile): JSX.Element {
   return (
     <>
-      {showMenu ? (
+      {showMenu && (
         <>
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
@@ -134,9 +137,10 @@ function Mobile({ hideMenu, showMenu }: TMobile): JSX.Element {
             className={` flex justify-between h-full w-full bg-gray-900 bg-opacity-70 absolute inset-0`}
             onClick={() => hideMenu()}></motion.div>
           <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.5, transform: "translateY(-100%)" }}
+            animate={{ opacity: 1, scale: 1, transform: "translateY(0%)" }}
             transition={{ duration: 0.4 }}
+            onClick={() => hideMenu()}
             className={`w-1/2 h-full z-50 bg-black absolute inset-0`}>
             <div>
               <div className="flex justify-between w-full p-4">
@@ -180,12 +184,20 @@ function Mobile({ hideMenu, showMenu }: TMobile): JSX.Element {
             </div>
           </motion.div>
         </>
-      ) : (
-        <motion.div
-          initial={{ opacity: 1, scale: 1 }}
-          animate={{ opacity: 0, scale: 0.5 }}
-          transition={{ duration: 0.4 }}
-          className={` flex justify-between h-full w-full rounded-lg bg-gray-900 bg-opacity-70 absolute inset-0`}></motion.div>
+      )}
+      {showTransition && showMenu === false && (
+        <>
+          <motion.div
+            initial={{ opacity: 1, scale: 1 }}
+            animate={{ opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.5 }}
+            className={` flex justify-between h-full w-full rounded-lg bg-gray-900 bg-opacity-70 absolute inset-0`}></motion.div>
+          <motion.div
+            initial={{ opacity: 1, scale: 1, transform: "translateY(0%)" }}
+            animate={{ opacity: 0, scale: 0.5, transform: "translateY(100%)" }}
+            transition={{ duration: 0.4 }}
+            className={`w-1/2 h-full z-50 bg-black absolute inset-0`}></motion.div>
+        </>
       )}
     </>
   );
