@@ -134,14 +134,14 @@ function Mobile({ hideMenu, showMenu, showTransition }: TMobile): JSX.Element {
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
-            className={` flex justify-between h-full w-full bg-gray-900 bg-opacity-70 absolute inset-0`}
+            className={`flex justify-between h-full w-full z-40 bg-gray-900 bg-opacity-70 absolute inset-0`}
             onClick={() => hideMenu()}></motion.div>
           <motion.div
             initial={{ opacity: 0, scale: 0.5, transform: "translateY(-100%)" }}
             animate={{ opacity: 1, scale: 1, transform: "translateY(0%)" }}
             transition={{ duration: 0.4 }}
             onClick={() => hideMenu()}
-            className={`w-1/2 h-full z-50 bg-black absolute inset-0`}>
+            className={` ${showMenu ? "grid" : "hidden"} w-1/2 h-full z-50 bg-black absolute inset-0`}>
             <div>
               <div className="flex justify-between w-full p-4">
                 {Logo}
@@ -196,7 +196,7 @@ function Mobile({ hideMenu, showMenu, showTransition }: TMobile): JSX.Element {
             initial={{ opacity: 1, scale: 1, transform: "translateY(0%)" }}
             animate={{ opacity: 0, scale: 0.5, transform: "translateY(100%)" }}
             transition={{ duration: 0.4 }}
-            className={`w-1/2 h-full z-50 bg-black absolute inset-0`}></motion.div>
+            className={`${showMenu ? "grid" : "hidden"} w-1/2 h-full z-50 bg-black absolute inset-0`}></motion.div>
         </>
       )}
     </>
