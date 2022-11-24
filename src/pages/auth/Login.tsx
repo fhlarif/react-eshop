@@ -1,11 +1,13 @@
 import React from "react";
 import { AiOutlineLogin } from "react-icons/ai";
-import { FaRegistered } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const Login = () => {
+  const { login } = useAuth();
+  login();
   return (
-    <section className="animate-slidedown flex border-2 border-gray-700 zxxxxxxxxxxxxxxxxxxxxxxxxxxxx shadow-2xl drop-shadow-2xl rounded-xl w-full md:mx-auto h-full mt-24 py-16 justify-center items-center">
+    <section className="animate-slidedown flex border-2 border-gray-700 shadow-2xl drop-shadow-2xl rounded-xl w-full md:mx-auto h-full mt-24 py-16 justify-center items-center">
       <div className="w-full">
         <h2 className="text-2xl text-amber-600 leading-loose tracking-wider uppercase font-extrabold text-center">
           Login
