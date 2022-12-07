@@ -1,17 +1,30 @@
 import { axios } from "../laravel/axios";
+import { ReactNode } from "react";
+import { RegisterProps } from "../pages/auth/AuthInterface";
 
 const useAuth = () => {
   const csrf = () => axios.get("/sanctum/csrf-cookie");
 
   const login = async () => {
     await csrf();
-
-    const test = axios.get("/api/test").then((res) => res.data);
-
-    console.log(await test);
+    axios.get("/api/test").then((res) => res.data);
   };
 
-  return { login };
+  const register = async ({ setErrors, ...props }: RegisterProps) => {
+    await csrf();
+
+    setErrors(undefined);
+    axios
+      .post("/register", props)
+      .then((e) => console.log(e))
+      .catch((error) => {
+        if (error.response.status !== 422) throw error.response;
+
+        setErrors(error.response.data.errors);
+      });
+  };
+
+  return { login, register };
 };
 
 export default useAuth;
