@@ -3,6 +3,7 @@ export interface RegisterInputs {
   email: string;
   password: string;
   password_confirmation: string;
+  status?: string | number;
 }
 
 export interface RegisterProps {
@@ -11,4 +12,7 @@ export interface RegisterProps {
   password: string;
   password_confirmation: string;
   setErrors: React.Dispatch<React.SetStateAction<RegisterInputs | undefined>>;
+  setRegistered: React.Dispatch<React.SetStateAction<RegisterInputs | undefined>>;
+  setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>;
+  toast?: any;
 }

@@ -1,9 +1,10 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { FaRegistered } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import InputError from "../../components/InputError";
+import Loader from "../../components/Loader";
 import useAuth from "../../hooks/useAuth";
 import { RegisterInputs } from "./AuthInterface";
 
@@ -13,31 +14,42 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [errors, setErrors] = useState<RegisterInputs>();
+  const [isloading, setIsloading] = useState<boolean>(false);
+  const [registered, setRegistered] = useState<RegisterInputs>();
 
   const { register } = useAuth();
 
-  const registerUSer = (e: FormEvent) => {
+  const registerUSer = async (e: FormEvent) => {
     e.preventDefault();
     if (password !== passwordConfirmation) {
-      toast.error("Password do not Match!");
+      return toast.error("Password do not Match!");
     }
-    register({
+    setIsloading(true);
+    await register({
       name,
       email,
       password,
       password_confirmation: passwordConfirmation,
       setErrors,
+      setRegistered,
+      toast,
     });
   };
 
   return (
     <>
       <ToastContainer />
+      {isloading && errors === undefined && registered === undefined && <Loader />}
       <section className="animate-slideleft flex border-2 py-16 border-gray-700 shadow-2xl drop-shadow-2xl rounded-xl p-2 w-full md:mx-auto h-full mt-24 justify-center items-center">
         <div className="w-full">
           <h2 className="text-2xl text-amber-600 leading-loose tracking-wider uppercase font-extrabold text-center">
-            Register
+            {Number(registered?.status) !== 404 ? (
+              "Register "
+            ) : (
+              <InputError message={Number(registered?.status) === 404 ? "Already Registered!" : ""} />
+            )}
           </h2>
+
           <div className="grid md:grid-cols-2">
             <div className="hidden md:flex justify-center items-center">
               <FaRegistered size={226} />
