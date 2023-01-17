@@ -38,7 +38,12 @@ const useAuth = () => {
       });
   };
 
-  return { login, register };
+  async function getUser() {
+    await csrf();
+    axios.get("/api/user").then((res) => console.log(res.data));
+  }
+
+  return { login, register, getUser };
 };
 
 export default useAuth;
