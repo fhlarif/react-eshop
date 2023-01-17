@@ -19,7 +19,7 @@ const Register = () => {
 
   const { register } = useAuth();
 
-  const registerUSer = async (e: FormEvent) => {
+  const registerUser = async (e: FormEvent) => {
     e.preventDefault();
     if (password !== passwordConfirmation) {
       return toast.error("Password do not Match!");
@@ -49,12 +49,11 @@ const Register = () => {
               <InputError message={Number(registered?.status) === 404 ? "Already Registered!" : ""} />
             )}
           </h2>
-
           <div className="grid md:grid-cols-2">
             <div className="hidden md:flex justify-center items-center">
               <FaRegistered size={226} />
             </div>
-            <form onSubmit={registerUSer} className="w-full px-4 rounded-lg">
+            <form onSubmit={registerUser} className="w-full px-4 rounded-lg">
               <div className="mb-6">
                 <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                   Your name
