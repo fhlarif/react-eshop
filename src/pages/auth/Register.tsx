@@ -14,7 +14,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [errors, setErrors] = useState<RegisterInputs>();
-  const [isloading, setIsloading] = useState<boolean>(false);
+  const [isloading, setIsLoading] = useState<boolean>(false);
   const [registered, setRegistered] = useState<RegisterInputs>();
 
   const { register } = useAuth();
@@ -24,7 +24,7 @@ const Register = () => {
     if (password !== passwordConfirmation) {
       return toast.error("Password do not Match!");
     }
-    setIsloading(true);
+    setIsLoading(true);
     await register({
       name,
       email,
@@ -32,6 +32,7 @@ const Register = () => {
       password_confirmation: passwordConfirmation,
       setErrors,
       setRegistered,
+      setIsLoading,
       toast,
     });
   };
@@ -39,6 +40,7 @@ const Register = () => {
   return (
     <>
       <ToastContainer />
+      <button onClick={() => console.log(registered, "im registered")}> click me check</button>
       {isloading && errors === undefined && registered === undefined && <Loader />}
       <section className="animate-slideleft flex border-2 py-16 border-gray-700 shadow-2xl drop-shadow-2xl rounded-xl p-2 w-full md:mx-auto h-full mt-24 justify-center items-center">
         <div className="w-full">
