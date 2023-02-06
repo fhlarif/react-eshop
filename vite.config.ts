@@ -5,11 +5,11 @@ import fs from "fs-extra";
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 3000,
+    port: 4200,
     host: "vios.iium.edu.my",
-    https: {
-      key: fs.readFileSync("../../../../etc/ssl/laragon.key"),
-      cert: fs.readFileSync("../../../../etc/ssl/laragon.crt"),
-    },
+    // https: {
+    //   key: fs.readFileSync("../../../../etc/ssl/laragon.key"),
+    //   cert: fs.readFileSync("../../../../etc/ssl/laragon.crt"),
+    // },
   },
 });
